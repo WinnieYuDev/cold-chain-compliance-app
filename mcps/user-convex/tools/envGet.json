@@ -1,0 +1,23 @@
+{
+  "name": "envGet",
+  "description": "Get a specific environment variable from your Convex deployment.",
+  "arguments": {
+    "type": "object",
+    "properties": {
+      "deploymentSelector": {
+        "type": "string",
+        "description": "Deployment selector (from the status tool) to get environment variable from."
+      },
+      "name": {
+        "type": "string",
+        "description": "The name of the environment variable to retrieve."
+      }
+    },
+    "required": [
+      "deploymentSelector",
+      "name"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  }
+}

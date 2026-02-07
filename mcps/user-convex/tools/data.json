@@ -1,0 +1,41 @@
+{
+  "name": "data",
+  "description": "Read a page of data from a table in the project's Convex deployment.\n\nOutput:\n- page: A page of results from the table.\n- isDone: Whether there are more results to read.\n- continueCursor: The cursor to use to read the next page of results.",
+  "arguments": {
+    "type": "object",
+    "properties": {
+      "deploymentSelector": {
+        "type": "string",
+        "description": "Deployment selector (from the status tool) to read data from."
+      },
+      "tableName": {
+        "type": "string",
+        "description": "The name of the table to read from."
+      },
+      "order": {
+        "type": "string",
+        "enum": [
+          "asc",
+          "desc"
+        ],
+        "description": "The order to sort the results in."
+      },
+      "cursor": {
+        "type": "string",
+        "description": "The cursor to start reading from."
+      },
+      "limit": {
+        "type": "number",
+        "maximum": 1000,
+        "description": "The maximum number of results to return, defaults to 100."
+      }
+    },
+    "required": [
+      "deploymentSelector",
+      "tableName",
+      "order"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  }
+}

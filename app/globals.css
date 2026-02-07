@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #0f172a;
+  --accent: #2563eb;
+  --warning: #f59e0b;
+  --danger: #dc2626;
+  --success: #16a34a;
+}
+
+body {
+  @apply bg-primary text-gray-100 antialiased;
+}

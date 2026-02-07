@@ -1,0 +1,18 @@
+{
+  "name": "envList",
+  "description": "List all environment variables in your Convex deployment.",
+  "arguments": {
+    "type": "object",
+    "properties": {
+      "deploymentSelector": {
+        "type": "string",
+        "description": "Deployment selector (from the status tool) to list environment variables from."
+      }
+    },
+    "required": [
+      "deploymentSelector"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  }
+}

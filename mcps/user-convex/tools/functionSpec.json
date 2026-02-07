@@ -1,0 +1,18 @@
+{
+  "name": "functionSpec",
+  "description": "Get the function metadata from a Convex deployment.\n\nReturns an array of structured objects for each function the deployment. Each function's\nmetadata contains its identifier (which is its path within the convex/ folder joined\nwith its exported name), its argument validator, its return value validator, its type\n(i.e. is it a query, mutation, or action), and its visibility (i.e. is it public or\ninternal).",
+  "arguments": {
+    "type": "object",
+    "properties": {
+      "deploymentSelector": {
+        "type": "string",
+        "description": "Deployment selector (from the status tool) to get function metadata from."
+      }
+    },
+    "required": [
+      "deploymentSelector"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  }
+}

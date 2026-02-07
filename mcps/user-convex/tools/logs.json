@@ -1,0 +1,39 @@
+{
+  "name": "logs",
+  "description": "Fetch a chunk of recent log entries from your Convex deployment.\n\nReturns a batch of UDF execution log entries and a new cursor you can use to\nrequest the next batch. This tool does not tail; it performs a single fetch.",
+  "arguments": {
+    "type": "object",
+    "properties": {
+      "deploymentSelector": {
+        "type": "string",
+        "description": "Deployment selector (from the status tool) to read logs from."
+      },
+      "cursor": {
+        "type": "number",
+        "description": "Optional cursor (in ms) to start reading from. Use 0 to read from the beginning."
+      },
+      "entriesLimit": {
+        "type": "integer",
+        "exclusiveMinimum": 0,
+        "maximum": 1000,
+        "description": "Maximum number of log entries to return (from the end). If omitted, returns all available in this chunk."
+      },
+      "tokensLimit": {
+        "type": "integer",
+        "exclusiveMinimum": 0,
+        "default": 20000,
+        "description": "Approximate maximum number of tokens to return (applied to the JSON payload). Defaults to 20000."
+      },
+      "jsonl": {
+        "type": "boolean",
+        "default": false,
+        "description": "If true, return raw log entries as JSONL. If false (default), return formatted text logs."
+      }
+    },
+    "required": [
+      "deploymentSelector"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  }
+}

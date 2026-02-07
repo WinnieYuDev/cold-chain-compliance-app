@@ -1,0 +1,7 @@
+[
+  { "shipmentId": "PHARMA-MOCK-001", "timestamp": 1706774400000, "temperature": 5, "productType": "vaccine" },
+  { "shipmentId": "PHARMA-MOCK-001", "timestamp": 1706778000000, "temperature": 6, "productType": "vaccine" },
+  { "shipmentId": "PHARMA-MOCK-001", "timestamp": 1706781600000, "temperature": 4, "productType": "vaccine" },
+  { "shipmentId": "PHARMA-MOCK-001", "timestamp": 1706785200000, "temperature": 7, "productType": "vaccine" },
+  { "shipmentId": "PHARMA-MOCK-001", "timestamp": 1706788800000, "temperature": 5, "productType": "vaccine" }
+]

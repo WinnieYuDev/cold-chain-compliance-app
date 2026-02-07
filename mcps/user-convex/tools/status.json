@@ -1,0 +1,15 @@
+{
+  "name": "status",
+  "description": "Get all available deployments for a given Convex project directory.\n\nUse this tool to find the deployment selector, URL, and dashboard URL for each\ndeployment associated with the project. Pass the deployment selector to other\ntools to target a specific deployment.\n\nWhen deployed to Convex Cloud, projects have a development ({\"kind\": \"ownDev\"}) and\nproduction ({\"kind\": \"prod\"}) deployment. Generally default to using the development\ndeployment unless you'd specifically like to debug issues in production.\n\nWhen running locally, there will be a single \"urlWithAdminKey\" deployment.",
+  "arguments": {
+    "type": "object",
+    "properties": {
+      "projectDir": {
+        "type": "string",
+        "description": "\nThe root directory of the Convex project. This is usually the editor's workspace directory\nand often includes the 'package.json' file and the 'convex/' folder.\n\nPass this option unless explicitly instructed not to.\n"
+      }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  }
+}

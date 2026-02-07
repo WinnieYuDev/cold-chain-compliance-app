@@ -1,0 +1,28 @@
+{
+  "name": "envSet",
+  "description": "Set an environment variable in your Convex deployment.",
+  "arguments": {
+    "type": "object",
+    "properties": {
+      "deploymentSelector": {
+        "type": "string",
+        "description": "Deployment selector (from the status tool) to set environment variable on."
+      },
+      "name": {
+        "type": "string",
+        "description": "The name of the environment variable to set."
+      },
+      "value": {
+        "type": "string",
+        "description": "The value to set for the environment variable."
+      }
+    },
+    "required": [
+      "deploymentSelector",
+      "name",
+      "value"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  }
+}
