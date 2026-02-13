@@ -93,6 +93,38 @@ All AI calls use OpenAI (API key in Convex env); prompts are kept concise and pr
    - In the [Convex dashboard](https://dashboard.convex.dev), set `OPENAI_API_KEY` for AI features.
    - Use **Data Upload** with files from `data/mock/` (pick a facility and policy first).
 
+## Deploy to the cloud (Convex Cloud + Vercel)
+
+Production uses **Convex Cloud** for the backend and **Vercel** for the Next.js app. Do not commit `.env.local`; production gets config from Convex and Vercel only.
+
+### 1. Switch Convex to cloud
+
+- In the project root, run: `npx convex dev`.
+- When prompted, choose **Use cloud** (not local deployment). Use your existing Convex project or create one.
+- Convex will update `.env.local` with:
+  - `CONVEX_DEPLOYMENT=<cloud-deployment-key>` (e.g. `dev:...`)
+  - `NEXT_PUBLIC_CONVEX_URL=https://<deployment>.convex.cloud`
+- Let Convex push your `convex/` functions to the cloud deployment.
+- Seed the cloud database once: `npx convex run seed:run`.
+
+### 2. Deploy Next.js to Vercel
+
+- Push the project to **GitHub** (or GitLab/Bitbucket).
+- In [Vercel](https://vercel.com): **Add New Project** and import the repo. Keep default framework (Next.js) and root directory.
+- In the Vercel project go to **Settings → Environment Variables** and add:
+
+  | Name | Value |
+  |------|--------|
+  | `NEXT_PUBLIC_CONVEX_URL` | Your Convex Cloud URL (e.g. `https://....convex.cloud` from the [Convex dashboard](https://dashboard.convex.dev)) |
+
+  Apply to Production and Preview (or use a separate Convex production deployment URL for Production).
+
+- Deploy (push to main or click **Deploy** in Vercel). The app will be at `https://<project>.vercel.app` and will use Convex Cloud via `NEXT_PUBLIC_CONVEX_URL`.
+
+### 3. Optional: production Convex deployment
+
+- In the Convex dashboard you can create a **production** deployment. Push with `npx convex deploy --prod` and set `NEXT_PUBLIC_CONVEX_URL` in Vercel to that deployment’s URL for Production.
+
 ## Troubleshooting
 
 ### "Failed to load SWC binary" (Windows)
