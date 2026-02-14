@@ -1,22 +1,48 @@
 /**
- * User and RBAC: get current user, list users (for Admin).
- * In production, use Convex Auth and enforce role in each protected function.
+ * User and RBAC: get current user (getMe), list users (for Admin).
+ * Uses Convex Auth; auth identity is used for getMe.
  */
 import { v } from "convex/values";
 import { query } from "./_generated/server";
+import { auth } from "./auth";
+
+const userProfileValidator = v.union(
+  v.object({
+    _id: v.id("users"),
+    email: v.optional(v.string()),
+    name: v.optional(v.string()),
+    role: v.optional(
+      v.union(v.literal("admin"), v.literal("supervisor"), v.literal("viewer"))
+    ),
+    companyId: v.optional(v.id("companies")),
+    facilityIds: v.optional(v.array(v.id("facilities"))),
+  }),
+  v.null()
+);
+
+/** Current authenticated user profile (role, companyId, etc.) or null if not signed in. */
+export const getMe = query({
+  args: {},
+  returns: userProfileValidator,
+  handler: async (ctx) => {
+    const userId = await auth.getUserId(ctx);
+    if (userId === null) return null;
+    const user = await ctx.db.get(userId);
+    if (!user) return null;
+    return {
+      _id: user._id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      companyId: user.companyId,
+      facilityIds: user.facilityIds,
+    };
+  },
+});
 
 export const getCurrentUser = query({
   args: { userId: v.id("users") },
-  returns: v.union(
-    v.object({
-      _id: v.id("users"),
-      email: v.string(),
-      name: v.string(),
-      role: v.union(v.literal("admin"), v.literal("supervisor"), v.literal("viewer")),
-      facilityIds: v.optional(v.array(v.id("facilities"))),
-    }),
-    v.null()
-  ),
+  returns: userProfileValidator,
   handler: async (ctx, args) => {
     const user = await ctx.db.get(args.userId);
     if (!user) return null;
@@ -25,6 +51,7 @@ export const getCurrentUser = query({
       email: user.email,
       name: user.name,
       role: user.role,
+      companyId: user.companyId,
       facilityIds: user.facilityIds,
     };
   },
@@ -35,9 +62,11 @@ export const listUsers = query({
   returns: v.array(
     v.object({
       _id: v.id("users"),
-      email: v.string(),
-      name: v.string(),
-      role: v.union(v.literal("admin"), v.literal("supervisor"), v.literal("viewer")),
+      email: v.optional(v.string()),
+      name: v.optional(v.string()),
+      role: v.optional(
+        v.union(v.literal("admin"), v.literal("supervisor"), v.literal("viewer"))
+      ),
     })
   ),
   handler: async (ctx) => {

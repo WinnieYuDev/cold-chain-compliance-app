@@ -56,21 +56,32 @@ export const run = internalMutation({
       updatedAt: now,
     });
 
-    // Users (one per role)
+    // Company for demo users
+    const demoCompanyId = await ctx.db.insert("companies", {
+      name: "Demo Company",
+      slug: "demo-company",
+      createdAt: now,
+    });
+
+    // Demo users (one per role) linked to demo company.
+    // To sign in, use Register to create a new company and admin, or add auth accounts separately.
     await ctx.db.insert("users", {
       email: "admin@coldchain.demo",
       name: "Admin User",
       role: "admin",
+      companyId: demoCompanyId,
     });
     await ctx.db.insert("users", {
       email: "supervisor@coldchain.demo",
       name: "Supervisor User",
       role: "supervisor",
+      companyId: demoCompanyId,
     });
     await ctx.db.insert("users", {
       email: "viewer@coldchain.demo",
       name: "Viewer User",
       role: "viewer",
+      companyId: demoCompanyId,
     });
 
     // Shipments: 2 food, 2 pharma

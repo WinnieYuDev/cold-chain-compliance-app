@@ -61,7 +61,7 @@ export const ingestReadings = internalMutation({
     }
 
     const docIdsToDetect: Id<"shipments">[] = [];
-    for (const [shipmentIdKey, rows] of byShipment) {
+    for (const [shipmentIdKey, rows] of Array.from(byShipment.entries())) {
       const shipDocId = shipmentIdToDocId[shipmentIdKey]!;
       for (const row of rows) {
         await ctx.db.insert("temperatureReadings", {

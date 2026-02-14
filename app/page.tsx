@@ -9,12 +9,20 @@ export default function HomePage() {
       <p className="text-gray-400 mb-8 text-center max-w-md">
         Enterprise cold chain compliance for Food and Pharmaceutical industries.
       </p>
-      <Link
-        href="/dashboard"
-        className="px-6 py-3 rounded-lg bg-accent text-white font-medium hover:opacity-90"
-      >
-        Go to Dashboard
-      </Link>
+      <div className="flex gap-3">
+        <Link
+          href="/login"
+          className="px-6 py-3 rounded-lg bg-accent text-white font-medium hover:opacity-90"
+        >
+          Sign in
+        </Link>
+        <Link
+          href="/register"
+          className="px-6 py-3 rounded-lg border border-slate-600 text-slate-300 font-medium hover:bg-slate-800"
+        >
+          Register company
+        </Link>
+      </div>
     </main>
   );
 }

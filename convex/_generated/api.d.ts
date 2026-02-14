@@ -11,10 +11,13 @@
 import type * as ai_analysis from "../ai/analysis.js";
 import type * as ai_storage from "../ai/storage.js";
 import type * as audit from "../audit.js";
+import type * as auth from "../auth.js";
+import type * as companies from "../companies.js";
 import type * as dashboard from "../dashboard.js";
 import type * as excursions_detect from "../excursions/detect.js";
 import type * as export_ from "../export.js";
 import type * as facilities from "../facilities.js";
+import type * as http from "../http.js";
 import type * as ingestion_mockApi from "../ingestion/mockApi.js";
 import type * as ingestion_mutations from "../ingestion/mutations.js";
 import type * as ingestion_parse from "../ingestion/parse.js";
@@ -39,10 +42,13 @@ declare const fullApi: ApiFromModules<{
   "ai/analysis": typeof ai_analysis;
   "ai/storage": typeof ai_storage;
   audit: typeof audit;
+  auth: typeof auth;
+  companies: typeof companies;
   dashboard: typeof dashboard;
   "excursions/detect": typeof excursions_detect;
   export: typeof export_;
   facilities: typeof facilities;
+  http: typeof http;
   "ingestion/mockApi": typeof ingestion_mockApi;
   "ingestion/mutations": typeof ingestion_mutations;
   "ingestion/parse": typeof ingestion_parse;

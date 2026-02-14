@@ -5,19 +5,41 @@
  */
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
+import { authTables } from "@convex-dev/auth/server";
+
+const { users: _authUsers, ...restAuthTables } = authTables;
 
 export default defineSchema({
-  /** Users with role and optional facility scope (for RBAC) */
-  users: defineTable({
-    email: v.string(),
+  ...restAuthTables,
+
+  /** Companies (multi-tenant) */
+  companies: defineTable({
     name: v.string(),
-    role: v.union(
-      v.literal("admin"),
-      v.literal("supervisor"),
-      v.literal("viewer")
+    slug: v.string(),
+    createdAt: v.number(),
+  }).index("by_slug", ["slug"]),
+
+  /** Users: auth fields plus app profile (role, company, facilities) */
+  users: defineTable({
+    name: v.optional(v.string()),
+    image: v.optional(v.string()),
+    email: v.optional(v.string()),
+    emailVerificationTime: v.optional(v.number()),
+    phone: v.optional(v.string()),
+    phoneVerificationTime: v.optional(v.number()),
+    isAnonymous: v.optional(v.boolean()),
+    role: v.optional(
+      v.union(
+        v.literal("admin"),
+        v.literal("supervisor"),
+        v.literal("viewer")
+      )
     ),
+    companyId: v.optional(v.id("companies")),
     facilityIds: v.optional(v.array(v.id("facilities"))),
-  }).index("by_email", ["email"]),
+  })
+    .index("email", ["email"])
+    .index("phone", ["phone"]),
 
   /** Facilities (warehouse, transport, etc.) */
   facilities: defineTable({
