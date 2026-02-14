@@ -57,9 +57,11 @@ export const analyzeExcursion = internalAction({
     const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) return "AI analysis unavailable (no API key).";
 
-    const systemPrompt = `You are a cold chain compliance analyst. Write a single short paragraph (2-3 sentences) that:
+    const systemPrompt = `You are a cold chain compliance analyst. Write a single short paragraph (2-4 sentences) that:
 1. Explains the excursion in plain language suitable for regulators (HACCP/FSMA or GDP/GxP).
-2. States the recommended corrective action.
+2. States how it affects auditing (e.g. what to document, audit trail implications).
+3. States how it relates to policy compliance under HACCP/FSMA (food) or GDP/GxP (pharma).
+4. States the recommended corrective action.
 Keep the tone professional and factual. No bullet points.`;
     const userContent = `Excursion: ${args.excursionSummary}. Rule violated: ${args.ruleViolated}. Severity: ${args.severity}.${args.temperatureC != null ? ` Temperature: ${args.temperatureC}°C.` : ""} Duration: ${args.durationMinutes} minutes. Provide analysis and corrective action.`;
 

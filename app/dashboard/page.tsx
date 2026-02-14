@@ -7,46 +7,35 @@ import { KPICard } from "@/components/KPICard";
 import { TemperatureChart, type ExcursionBand } from "@/components/TemperatureChart";
 import { AuditLogTable } from "@/components/AuditLogTable";
 import { AIInsightCard } from "@/components/AIInsightCard";
-import type { Id } from "@/convex/_generated/dataModel";
 
-const EXCURSION_BAND_COLORS = ["#dc2626", "#ea580c", "#ca8a04", "#65a30d", "#0891b2"];
-
-function getExcursionColor(index: number): string {
-  return EXCURSION_BAND_COLORS[index % EXCURSION_BAND_COLORS.length];
-}
+const EXCURSION_BAND_COLOR = "#ea580c";
 
 export default function DashboardPage() {
   const kpis = useQuery(api.dashboard.kpis, {});
   const readings = useQuery(api.dashboard.recentTemperatureReadings, {
     limit: 60,
   });
-  const excursions = useQuery(api.dashboard.recentExcursions, { limit: 10 });
+  const mostRecent = useQuery(api.dashboard.mostRecentExcursionWithInsight);
   const auditLogs = useQuery(api.dashboard.recentAuditLogs, { limit: 15 });
-  const aiInsightsRaw = useQuery(api.dashboard.aiInsightsList, { limit: 10 });
 
-  const excursionBands: ExcursionBand[] = useMemo(
-    () =>
-      (excursions ?? []).map((e, i) => ({
-        startTime: e.startTime,
-        endTime: e.endTime,
-        severity: e.severity,
-        color: getExcursionColor(i),
-      })),
-    [excursions]
-  );
+  const excursionBands: ExcursionBand[] = useMemo(() => {
+    const ex = mostRecent?.excursion;
+    if (!ex) return [];
+    return [
+      {
+        startTime: ex.startTime,
+        endTime: ex.endTime,
+        severity: ex.severity,
+        color: EXCURSION_BAND_COLOR,
+      },
+    ];
+  }, [mostRecent?.excursion]);
 
-  const excursionInsightsWithColors = useMemo(() => {
-    const insights = (aiInsightsRaw ?? []).filter((i) => i.type === "excursion_analysis");
-    const ex = excursions ?? [];
-    return insights.map((insight) => {
-      const shipmentId = insight.shipmentId as Id<"shipments"> | undefined;
-      const excursionIndex = shipmentId
-        ? ex.findIndex((e) => e.shipmentId === shipmentId)
-        : -1;
-      const accentColor = excursionIndex >= 0 ? getExcursionColor(excursionIndex) : undefined;
-      return { ...insight, accentColor };
-    });
-  }, [aiInsightsRaw, excursions]);
+  const singleInsightForCard = useMemo(() => {
+    const insight = mostRecent?.insight;
+    if (!insight) return [];
+    return [{ _id: insight._id, type: insight.type, content: insight.content, shipmentId: insight.shipmentId }];
+  }, [mostRecent?.insight]);
 
   return (
     <div className="space-y-6">
@@ -74,7 +63,7 @@ export default function DashboardPage() {
         />
       </div>
 
-      {/* Temperature log with excursions on chart and AI insights below (color-matched) */}
+      {/* Temperature log with most recent excursion and related AI insight */}
       <div className="rounded-xl border border-slate-600 bg-slate-800/30 p-4">
         <h2 className="text-lg font-semibold text-white mb-4">
           Temperature log (recent) — excursions highlighted
@@ -89,9 +78,17 @@ export default function DashboardPage() {
             />
             <div className="mt-6">
               <h3 className="text-sm font-medium text-slate-400 mb-2">
-                AI insights (excursion analysis) — color matches chart
+                Most recent excursion — auditing & policy compliance
               </h3>
-              <AIInsightCard insights={excursionInsightsWithColors} />
+              {mostRecent === undefined ? (
+                <p className="text-slate-500 text-sm">Loading…</p>
+              ) : mostRecent === null ? (
+                <p className="text-slate-500 text-sm">No recent excursion.</p>
+              ) : mostRecent.insight === null ? (
+                <p className="text-slate-500 text-sm">No AI analysis for this excursion yet.</p>
+              ) : (
+                <AIInsightCard insights={singleInsightForCard} />
+              )}
             </div>
           </>
         ) : (

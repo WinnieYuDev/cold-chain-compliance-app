@@ -1,8 +1,8 @@
-"use node";
-
 /**
- * AI chatbox assistant for the About page: cold-chain Q&A using OpenAI.
+ * AI chatbox assistant: cold-chain Q&A using OpenAI.
  * Uses OPENAI_API_KEY in Convex env.
+ * Runs in default Convex runtime (no "use node") to avoid Windows ESM loader error
+ * (file:// URL scheme) when running convex dev locally.
  */
 import { v } from "convex/values";
 import { action } from "../_generated/server";
@@ -61,7 +61,9 @@ export const sendMessage = action({
     });
 
     if (!res.ok) {
-      const err = await res.text();
+      if (res.status === 429) {
+        return "The AI is getting a lot of requests right now. Please wait a minute and try again.";
+      }
       return `Sorry, I couldn't process that. (Error: ${res.status})`;
     }
 

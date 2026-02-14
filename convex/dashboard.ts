@@ -154,3 +154,67 @@ export const aiInsightsList = query({
     }));
   },
 });
+
+const excursionShape = v.object({
+  _id: v.id("excursions"),
+  shipmentId: v.id("shipments"),
+  ruleViolated: v.string(),
+  severity: v.string(),
+  durationMinutes: v.number(),
+  detectedAt: v.number(),
+  startTime: v.number(),
+  endTime: v.optional(v.number()),
+});
+
+const insightShape = v.object({
+  _id: v.id("aiInsights"),
+  shipmentId: v.optional(v.id("shipments")),
+  type: v.string(),
+  content: v.string(),
+});
+
+export const mostRecentExcursionWithInsight = query({
+  args: {},
+  returns: v.union(
+    v.null(),
+    v.object({
+      excursion: excursionShape,
+      insight: v.union(v.null(), insightShape),
+    })
+  ),
+  handler: async (ctx) => {
+    const list = await ctx.db.query("excursions").order("desc").take(1);
+    const excursion = list[0];
+    if (!excursion) return null;
+
+    const insights = await ctx.db
+      .query("aiInsights")
+      .withIndex("by_shipment_id_and_type", (q) =>
+        q.eq("shipmentId", excursion.shipmentId).eq("type", "excursion_analysis")
+      )
+      .collect();
+    const sorted = insights.sort((a, b) => b._creationTime - a._creationTime);
+    const latest = sorted[0];
+
+    return {
+      excursion: {
+        _id: excursion._id,
+        shipmentId: excursion.shipmentId,
+        ruleViolated: excursion.ruleViolated,
+        severity: excursion.severity,
+        durationMinutes: excursion.durationMinutes,
+        detectedAt: excursion.detectedAt,
+        startTime: excursion.startTime,
+        endTime: excursion.endTime,
+      },
+      insight: latest
+        ? {
+            _id: latest._id,
+            shipmentId: latest.shipmentId,
+            type: latest.type,
+            content: latest.content,
+          }
+        : null,
+    };
+  },
+});
