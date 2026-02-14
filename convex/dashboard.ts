@@ -83,6 +83,8 @@ export const recentExcursions = query({
       severity: v.string(),
       durationMinutes: v.number(),
       detectedAt: v.number(),
+      startTime: v.number(),
+      endTime: v.optional(v.number()),
     })
   ),
   handler: async (ctx, args) => {
@@ -95,6 +97,8 @@ export const recentExcursions = query({
       severity: e.severity,
       durationMinutes: e.durationMinutes,
       detectedAt: e.detectedAt,
+      startTime: e.startTime,
+      endTime: e.endTime,
     }));
   },
 });

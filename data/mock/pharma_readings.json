@@ -1,7 +1,21 @@
 [
-  { "shipmentId": "PHARMA-MOCK-001", "timestamp": 1706774400000, "temperature": 5, "productType": "vaccine" },
-  { "shipmentId": "PHARMA-MOCK-001", "timestamp": 1706778000000, "temperature": 6, "productType": "vaccine" },
-  { "shipmentId": "PHARMA-MOCK-001", "timestamp": 1706781600000, "temperature": 4, "productType": "vaccine" },
-  { "shipmentId": "PHARMA-MOCK-001", "timestamp": 1706785200000, "temperature": 7, "productType": "vaccine" },
-  { "shipmentId": "PHARMA-MOCK-001", "timestamp": 1706788800000, "temperature": 5, "productType": "vaccine" }
+  {"shipmentId":"PHARMA-MOCK-001","timestamp":1706774400000,"temperature":5,"productType":"vaccine"},
+  {"shipmentId":"PHARMA-MOCK-001","timestamp":1706778000000,"temperature":6,"productType":"vaccine"},
+  {"shipmentId":"PHARMA-MOCK-001","timestamp":1706781600000,"temperature":4,"productType":"vaccine"},
+  {"shipmentId":"PHARMA-MOCK-001","timestamp":1706785200000,"temperature":7,"productType":"vaccine"},
+  {"shipmentId":"PHARMA-MOCK-001","timestamp":1706788800000,"temperature":5,"productType":"vaccine"},
+  {"shipmentId":"PHARMA-MOCK-001","timestamp":1706792400000,"temperature":1,"productType":"vaccine"},
+  {"shipmentId":"PHARMA-MOCK-001","timestamp":1706796000000,"temperature":4,"productType":"vaccine"},
+  {"shipmentId":"PHARMA-MOCK-002","timestamp":1706800000000,"temperature":6,"productType":"biologic"},
+  {"shipmentId":"PHARMA-MOCK-002","timestamp":1706803600000,"temperature":5,"productType":"biologic"},
+  {"shipmentId":"PHARMA-MOCK-002","timestamp":1706807200000,"temperature":7,"productType":"biologic"},
+  {"shipmentId":"PHARMA-MOCK-002","timestamp":1706810800000,"temperature":9,"productType":"biologic"},
+  {"shipmentId":"PHARMA-MOCK-002","timestamp":1706814400000,"temperature":8,"productType":"biologic"},
+  {"shipmentId":"PHARMA-MOCK-002","timestamp":1706818000000,"temperature":5,"productType":"biologic"},
+  {"shipmentId":"PHARMA-MOCK-003","timestamp":1706821600000,"temperature":4,"productType":"vaccine"},
+  {"shipmentId":"PHARMA-MOCK-003","timestamp":1706825200000,"temperature":5,"productType":"vaccine"},
+  {"shipmentId":"PHARMA-MOCK-003","timestamp":1706828800000,"temperature":3,"productType":"vaccine"},
+  {"shipmentId":"PHARMA-MOCK-003","timestamp":1706832400000,"temperature":0,"productType":"vaccine"},
+  {"shipmentId":"PHARMA-MOCK-003","timestamp":1706836000000,"temperature":2,"productType":"vaccine"},
+  {"shipmentId":"PHARMA-MOCK-003","timestamp":1706839600000,"temperature":5,"productType":"vaccine"}
 ]

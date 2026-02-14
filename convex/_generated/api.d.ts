@@ -9,6 +9,7 @@
  */
 
 import type * as ai_analysis from "../ai/analysis.js";
+import type * as ai_chat from "../ai/chat.js";
 import type * as ai_storage from "../ai/storage.js";
 import type * as audit from "../audit.js";
 import type * as auth from "../auth.js";
@@ -40,6 +41,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   "ai/analysis": typeof ai_analysis;
+  "ai/chat": typeof ai_chat;
   "ai/storage": typeof ai_storage;
   audit: typeof audit;
   auth: typeof auth;

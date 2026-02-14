@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useMutation, useQuery, useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
@@ -14,8 +14,28 @@ export default function UploadPage() {
 
   const generateUploadUrl = useMutation(api.ingestion.mutations.generateUploadUrl);
   const processUpload = useAction(api.ingestion.upload.processUpload);
-  const facilities = useQuery(api.facilities.listFacilities, {});
-  const policies = useQuery(api.policies.queries.listPolicies, { activeOnly: true });
+  const facilitiesRaw = useQuery(api.facilities.listFacilities, {});
+  const policiesRaw = useQuery(api.policies.queries.listPolicies, { activeOnly: true });
+
+  const facilities = useMemo(() => {
+    const raw = facilitiesRaw ?? [];
+    const byId = new Map(raw.map((f) => [f._id, f]));
+    const byName = new Map<string, typeof raw[0]>();
+    for (const f of byId.values()) {
+      if (!byName.has(f.name)) byName.set(f.name, f);
+    }
+    return [...byName.values()].sort((a, b) => a.name.localeCompare(b.name));
+  }, [facilitiesRaw]);
+
+  const policies = useMemo(() => {
+    const raw = policiesRaw ?? [];
+    const byId = new Map(raw.map((p) => [p._id, p]));
+    const byName = new Map<string, typeof raw[0]>();
+    for (const p of byId.values()) {
+      if (!byName.has(p.name)) byName.set(p.name, p);
+    }
+    return [...byName.values()].sort((a, b) => a.name.localeCompare(b.name));
+  }, [policiesRaw]);
 
   async function handleUpload() {
     if (!file || !facilityId || !policyId) {
@@ -72,7 +92,7 @@ export default function UploadPage() {
             className="w-full rounded-lg bg-slate-700 border border-slate-600 text-white px-3 py-2"
           >
             <option value="">Select facility</option>
-            {(facilities ?? []).map((f) => (
+            {facilities.map((f) => (
               <option key={f._id} value={f._id}>{f.name}</option>
             ))}
           </select>
@@ -85,7 +105,7 @@ export default function UploadPage() {
             className="w-full rounded-lg bg-slate-700 border border-slate-600 text-white px-3 py-2"
           >
             <option value="">Select policy</option>
-            {(policies ?? []).map((p) => (
+            {policies.map((p) => (
               <option key={p._id} value={p._id}>{p.name}</option>
             ))}
           </select>

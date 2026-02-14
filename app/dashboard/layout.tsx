@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
 const nav = [
+  { href: "/dashboard/about", label: "About" },
   { href: "/dashboard", label: "Overview" },
   { href: "/dashboard/shipments", label: "Shipments" },
   { href: "/dashboard/excursions", label: "Excursions" },
@@ -62,9 +64,10 @@ export default function DashboardLayout({
   return (
     <div className="min-h-screen bg-primary flex">
       <aside className="w-56 border-r border-slate-700 bg-slate-900/50 flex flex-col">
-        <div className="p-4 border-b border-slate-700">
-          <Link href="/dashboard" className="font-semibold text-white">
-            Cold Chain Monitor
+        <div className="p-4 border-b border-slate-700 flex items-center gap-2">
+          <Link href="/dashboard" className="flex items-center gap-2 font-semibold text-white">
+            <Image src="/logo.svg" alt="" width={28} height={28} />
+            ThermoGuard
           </Link>
         </div>
         <nav className="p-2 flex-1">

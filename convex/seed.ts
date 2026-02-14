@@ -166,6 +166,52 @@ export const run = internalMutation({
       });
     }
 
+    // Extra food-like pattern: produce shipment with in-range and one brief high spike
+    const shipment5 = await ctx.db.insert("shipments", {
+      shipmentId: "FOOD-003",
+      facilityId: facilityA,
+      productType: "produce",
+      policyId: foodPolicyId,
+      metadata: { origin: "Farm C", destination: "Market D" },
+    });
+    for (let i = 0; i < 18; i++) {
+      await ctx.db.insert("temperatureReadings", {
+        shipmentId: shipment5,
+        timestamp: baseTime + i * 45 * 60 * 1000,
+        temperature: 3 + (i % 4),
+        source: "csv",
+      });
+    }
+    await ctx.db.insert("temperatureReadings", {
+      shipmentId: shipment5,
+      timestamp: baseTime + 9 * 45 * 60 * 1000,
+      temperature: 10,
+      source: "csv",
+    });
+
+    // Extra pharma-like pattern: biologic with steady range then one high reading
+    const shipment6 = await ctx.db.insert("shipments", {
+      shipmentId: "PHARMA-003",
+      facilityId: facilityC,
+      productType: "biologic",
+      policyId: pharmaPolicyId,
+      metadata: { batch: "BIO-2024-002" },
+    });
+    for (let i = 0; i < 14; i++) {
+      await ctx.db.insert("temperatureReadings", {
+        shipmentId: shipment6,
+        timestamp: baseTime + (i + 24) * 60 * 60 * 1000,
+        temperature: 4 + (i % 3),
+        source: "api",
+      });
+    }
+    await ctx.db.insert("temperatureReadings", {
+      shipmentId: shipment6,
+      timestamp: baseTime + 30 * 60 * 60 * 1000,
+      temperature: 9,
+      source: "api",
+    });
+
     // Sample excursions
     const readingExcursion = await ctx.db
       .query("temperatureReadings")

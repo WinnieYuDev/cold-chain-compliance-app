@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ConvexClientProvider } from "@/lib/convex";
+import { GlobalChat } from "@/components/GlobalChat";
 
 export const metadata: Metadata = {
-  title: "Cold Chain Compliance Monitor",
-  description: "Enterprise cold chain compliance for Food and Pharmaceutical industries",
+  title: "ThermoGuard — Cold Chain Compliance",
+  description: "ThermoGuard helps companies that ship food and pharmaceuticals monitor cold chain compliance, detect excursions, and maintain audit-ready records.",
 };
 
 export default function RootLayout({
@@ -15,7 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ConvexClientProvider>{children}</ConvexClientProvider>
+        <ConvexClientProvider>
+          {children}
+          <GlobalChat />
+        </ConvexClientProvider>
       </body>
     </html>
   );

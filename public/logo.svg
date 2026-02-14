@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+  <rect width="48" height="48" rx="8" fill="url(#thermo-bg)"/>
+  <path d="M24 8v32M20 12h8M20 18h8M20 24h8M20 30h8" stroke="#2563eb" strokeWidth="2" strokeLinecap="round"/>
+  <circle cx="24" cy="38" r="3" fill="#2563eb"/>
+  <path d="M24 8l-2 4h4L24 8z" fill="#2563eb"/>
+  <defs>
+    <linearGradient id="thermo-bg" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+      <stop stopColor="#1e3a5f"/>
+      <stop offset="1" stopColor="#0f172a"/>
+    </linearGradient>
+  </defs>
+</svg>
