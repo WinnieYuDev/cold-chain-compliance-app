@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuthActions } from "@convex-dev/auth/react";
+import { ConvexError } from "convex/values";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
@@ -18,17 +19,38 @@ export default function LoginPage() {
     setError(null);
     setLoading(true);
     try {
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/b28c620f-1826-4804-86f9-e892a0cc3bef',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'339547'},body:JSON.stringify({sessionId:'339547',location:'app/(auth)/login/page.tsx:pre-signIn',message:'signIn args',data:{flow:'signIn',emailLength:email?.length,hasPassword:!!password},timestamp:Date.now(),hypothesisId:'D'})}).catch(()=>{});
+      // #endregion
       const result = await signIn("password", {
         email,
         password,
         flow: "signIn",
       });
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/b28c620f-1826-4804-86f9-e892a0cc3bef',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'339547'},body:JSON.stringify({sessionId:'339547',location:'app/(auth)/login/page.tsx:post-signIn',message:'signIn result',data:{signingIn:!!result?.signingIn},timestamp:Date.now(),hypothesisId:'E'})}).catch(()=>{});
+      // #endregion
       if (result?.signingIn) {
         router.push("/dashboard");
         router.refresh();
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Sign in failed");
+      // #region agent log
+      const errMsg = err instanceof Error ? err.message : String(err);
+      const causeMsg = err instanceof Error && err.cause instanceof Error ? err.cause.message : (err as { cause?: { message?: string } })?.cause?.message;
+      fetch('http://127.0.0.1:7242/ingest/b28c620f-1826-4804-86f9-e892a0cc3bef',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'339547'},body:JSON.stringify({sessionId:'339547',location:'app/(auth)/login/page.tsx:catch',message:'signIn error',data:{errMsg,causeMsg,name:err instanceof Error ? err.name : undefined},timestamp:Date.now(),hypothesisId:'A,B,C'})}).catch(()=>{});
+      // #endregion
+      let message =
+        err instanceof ConvexError
+          ? (typeof err.data === "string" ? err.data : (err.data as { message?: string })?.message ?? "Sign in failed")
+          : err instanceof Error
+            ? err.message
+            : "Sign in failed";
+      if (message.includes("Server Error")) {
+        message =
+          "Sign-in failed (server error). Set JWT_PRIVATE_KEY and JWKS in your Convex dashboard (Convex Auth manual) and redeploy.";
+      }
+      setError(message);
     } finally {
       setLoading(false);
     }

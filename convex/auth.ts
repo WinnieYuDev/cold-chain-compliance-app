@@ -1,14 +1,16 @@
 import { convexAuth } from "@convex-dev/auth/server";
 import { Password } from "@convex-dev/auth/providers/Password";
+import { ConvexError } from "convex/values";
 import type { Id } from "./_generated/dataModel";
 
 export const { auth, signIn, signOut, store } = convexAuth({
   providers: [
     Password({
       profile(params) {
-        const email = params.email;
-        if (typeof email !== "string" || !email) {
-          throw new Error("Email is required");
+        const raw = params.email;
+        const email = typeof raw === "string" ? raw.trim() : "";
+        if (!email) {
+          throw new ConvexError("Email is required");
         }
         const profile: {
           email: string;

@@ -2,6 +2,7 @@
 
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useMutation } from "convex/react";
+import { ConvexError } from "convex/values";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
@@ -37,7 +38,17 @@ export default function RegisterPage() {
         router.refresh();
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Registration failed");
+      let message =
+        err instanceof ConvexError
+          ? (typeof err.data === "string" ? err.data : (err.data as { message?: string })?.message ?? "Registration failed")
+          : err instanceof Error
+            ? err.message
+            : "Registration failed";
+      if (message.includes("Server Error")) {
+        message =
+          "Registration failed (server error). Set JWT_PRIVATE_KEY and JWKS in your Convex dashboard (Convex Auth manual) and redeploy.";
+      }
+      setError(message);
     } finally {
       setLoading(false);
     }
