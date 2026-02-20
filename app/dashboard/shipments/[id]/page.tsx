@@ -27,7 +27,7 @@ function ShipmentDetailContent({
   detail: NonNullable<ReturnType<typeof useQuery<typeof api.shipments.getShipmentDetail>>>;
   chartData: Array<{ timestamp: number; temperature: number }>;
   excursionBands: ExcursionBand[];
-  aiInsightsWithColors: Array<{ _id: string; type: string; content: string; shipmentId?: unknown; accentColor?: string }>;
+  aiInsightsWithColors: Array<{ _id: string; type: string; content: string; shipmentId?: string; accentColor?: string }>;
 }) {
   const { shipment, facilityName, policyName, policyType, readings, excursions, riskScore } = detail;
   const tempValues = readings.map((r) => r.temperature);
@@ -202,7 +202,7 @@ export default function ShipmentDetailPage() {
       _id: insight._id,
       type: insight.type,
       content: insight.content,
-      shipmentId: insight.shipmentId,
+      shipmentId: insight.shipmentId as string | undefined,
       accentColor: ex[i] ? getExcursionColor(i) : undefined,
     }));
   }, [detail?.aiInsights, detail?.excursions]);

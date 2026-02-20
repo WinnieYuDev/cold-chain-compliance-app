@@ -1,0 +1,26 @@
+---
+description: How to run repeatable audits (Principal Engineer, Security, DevOps, Accessibility, SEO) using project skills, optimal agents, browser testing, and Convex MCP
+alwaysApply: false
+globs: "**/*"
+---
+
+# Audit workflow
+
+When the user requests an **audit**, determine which type, apply the matching skill, and use the optimal agent strategy:
+
+| User says… | Skill | Primary agent | Supporting agents | Browser? |
+|------------|-------|---------------|-------------------|----------|
+| PE / architecture review | `principal-engineer-audit` | generalPurpose (default) | explore (very thorough) | No |
+| Security audit / vuln check | `security-audit` | generalPurpose (default) | explore (very thorough) + browser-use | Yes |
+| DevOps / CI/CD review | `devops-audit` | generalPurpose (fast) | explore (quick) | Optional |
+| Accessibility / a11y / WCAG | `accessibility-audit` | browser-use (primary) | explore (medium) | **Yes — critical** |
+| SEO audit / meta review | `seo-audit` | generalPurpose (fast) | browser-use | Yes |
+
+## Key principles
+
+1. **Use the skill's output template** so every audit is consistent and comparable.
+2. **Scope first** — whole repo, package, PR, or specific flow — before diving in.
+3. **Cite files/lines** for every finding; keep recommendations actionable and prioritized.
+4. **Use Convex MCP** (`status`, `functionSpec`, `tables`, `envList`, `logs`) for live backend verification.
+5. **Use browser-use** for visual, keyboard, and runtime checks (critical for a11y and SEO).
+6. **Use explore subagent** to scan the codebase efficiently before deep analysis.
