@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ConvexClientProvider } from "@/lib/convex";
-import { GlobalChat } from "@/components/GlobalChat";
+
+const GlobalChat = dynamic(
+  () => import("@/components/GlobalChat").then((m) => ({ default: m.GlobalChat })),
+  { ssr: false }
+);
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
